@@ -24,7 +24,9 @@ Patrulha autônoma para o robô humanoide **UBTECH Yanshee** (Raspberry Pi 3B, P
 | `robo.py` | YanAPI: movimentos, LED, lista de danças |
 | `sensores.py` | RPi.GPIO: som e PIR |
 | `controle.py` | evdev: controle USB 8-bit |
-| `teclado.py` | Substituto do controle para testes |
+| `web.py` | Controle pelo celular (página com botões) |
+| `teclado.py` | Substituto do controle pelo terminal |
+| `estado.py` | Estado da missão exibido na página |
 | `patrulha.py` | As fases: gravar, patrulhar, reagir |
 | `main.py` | Ponto de entrada |
 
@@ -40,10 +42,11 @@ Rode de dentro da pasta do projeto. Dependências no robô: `YanAPI` (já vem no
 
 Em `config.py`, mude `MODO_ENTRADA`:
 
-- `"teclado"`: grave o trajeto digitando `w` (frente), `a` (esquerda), `d` (direita) e `p` (START) no terminal.
+- `"web"` (recomendado para testes): o robô serve uma página em `http://<IP_DO_ROBO>:8000`. Pelo celular, na mesma rede Wi-Fi, você tem as setas, o START, botões para simular o som e o movimento, e um **PARAR PATRULHA**, que volta o robô ao `reset` sem dançar.
+- `"teclado"`: grave o trajeto digitando `w` (frente), `a` (esquerda), `d` (direita) e `p` (START) no terminal via SSH.
 - `"fixo"`: pula a gravação e patrulha direto o `TRAJETO_FIXO`.
 
-Nesses dois modos o `evdev` não é necessário.
+Nesses modos o `evdev` não é necessário.
 
 ## Calibração
 

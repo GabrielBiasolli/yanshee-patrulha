@@ -7,11 +7,13 @@ Patrulha Yanshee - ponto de entrada.
   robo.py      YanAPI: movimentos, LED, lista de dancas
   sensores.py  RPi.GPIO: som e PIR com anti-falso positivo
   controle.py  evdev: leitura do controle USB 8-bit
+  web.py       controle pelo celular (pagina com botoes) para testes
   teclado.py   substituto do controle para testes (comandos no terminal)
+  estado.py    estado atual da missao, exibido na pagina do celular
   patrulha.py  as fases: gravar, patrulhar, reagir
 
-Para testar sem o controle, mude MODO_ENTRADA no config.py para "teclado"
-ou "fixo".
+Para testar sem o controle, mude MODO_ENTRADA no config.py para "web",
+"teclado" ou "fixo".
 
 Compativel com Python 3.5 (Raspberry Pi 3B do Yanshee).
 Rodar de dentro desta pasta:  sudo python3 main.py
@@ -32,6 +34,9 @@ def escolher_entrada():
     if config.MODO_ENTRADA == "controle":
         import controle
         return controle
+    if config.MODO_ENTRADA == "web":
+        import web
+        return web
     if config.MODO_ENTRADA == "teclado":
         import teclado
         return teclado
@@ -61,7 +66,12 @@ def main():
             trajeto = patrulha.gravar_trajeto(entrada, dispositivo)
 
         sensor = patrulha.patrulhar(trajeto)
-        patrulha.reagir_anormalidade(sensor, danca)
+        if sensor == "parada":
+            print("\n[!] Patrulha parada pela pagina. Voltando ao reset.")
+            robo.resetar()
+            robo.led_normal()
+        else:
+            patrulha.reagir_anormalidade(sensor, danca)
         print("\n[+] Missao concluida. Encerrando.")
 
     except KeyboardInterrupt:

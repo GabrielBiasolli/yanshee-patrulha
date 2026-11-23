@@ -5,11 +5,14 @@ ROBO_IP = "127.0.0.1"
 
 # --- Modo de entrada da Fase 1 (gravacao do trajeto) --------------------------
 #  "controle" -> controle USB 8-bit via evdev (modo final)
+#  "web"      -> pagina no celular com setas, START, simulacao dos sensores
+#                e botao PARAR (melhor modo para testar andando junto)
 #  "teclado"  -> digita os comandos no terminal/SSH (teste sem controle)
 #                w = frente | a = esquerda | d = direita | p = START
 #  "fixo"     -> pula a gravacao e patrulha direto o TRAJETO_FIXO
 MODO_ENTRADA = "controle"
 TRAJETO_FIXO = ["frente", "frente", "esquerda", "frente"]
+PORTA_WEB = 8000   # modo web: http://<IP_DO_ROBO>:8000 no celular
 
 # --- Sensores (numeracao BCM) -----------------------------------------------
 # ATENCAO: o GPIO do Raspberry Pi aceita no maximo 3.3 V.
