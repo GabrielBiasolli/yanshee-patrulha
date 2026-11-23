@@ -1,0 +1,3 @@
+# Quebra de linha Linux em tudo: o codigo roda no Raspberry Pi,
+# e um .sh com CRLF nao executa.
+* text=auto eol=lf
