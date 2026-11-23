@@ -38,11 +38,12 @@ sudo python3 main.py
 
 Rode de dentro da pasta do projeto. Dependências no robô: `YanAPI` (já vem no Yanshee), `RPi.GPIO` e `evdev`.
 
-### Testar sem o controle
+### Modos de entrada
 
-Em `config.py`, mude `MODO_ENTRADA`:
+O projeto vem em **modo web** (`MODO_ENTRADA = "web"` em `config.py`), para os testes. Para usar o controle 8-bit, troque para `"controle"`. Opções:
 
-- `"web"` (recomendado para testes): o robô serve uma página em `http://<IP_DO_ROBO>:8000`. Pelo celular, na mesma rede Wi-Fi, você tem as setas, o START, botões para simular o som e o movimento, e um **PARAR PATRULHA**, que volta o robô ao `reset` sem dançar.
+- `"controle"`: controle USB 8-bit via `evdev` (versão final).
+- `"web"` (padrão, para testes): o robô serve uma página em `http://<IP_DO_ROBO>:8000`. Pelo celular, na mesma rede Wi-Fi, você tem as setas, o START, botões para simular o som e o movimento, e um **PARAR PATRULHA**, que volta o robô ao `reset` sem dançar.
 - `"teclado"`: grave o trajeto digitando `w` (frente), `a` (esquerda), `d` (direita) e `p` (START) no terminal via SSH.
 - `"fixo"`: pula a gravação e patrulha direto o `TRAJETO_FIXO`.
 

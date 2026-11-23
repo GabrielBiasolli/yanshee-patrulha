@@ -10,7 +10,7 @@ ROBO_IP = "127.0.0.1"
 #  "teclado"  -> digita os comandos no terminal/SSH (teste sem controle)
 #                w = frente | a = esquerda | d = direita | p = START
 #  "fixo"     -> pula a gravacao e patrulha direto o TRAJETO_FIXO
-MODO_ENTRADA = "controle"
+MODO_ENTRADA = "web"   # fase de testes; troque para "controle" na versao final
 TRAJETO_FIXO = ["frente", "frente", "esquerda", "frente"]
 PORTA_WEB = 8000   # modo web: http://<IP_DO_ROBO>:8000 no celular
 
