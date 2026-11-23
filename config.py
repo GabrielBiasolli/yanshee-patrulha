@@ -10,7 +10,9 @@ ROBO_IP = "127.0.0.1"
 #  "teclado"  -> digita os comandos no terminal/SSH (teste sem controle)
 #                w = frente | a = esquerda | d = direita | p = START
 #  "fixo"     -> pula a gravacao e patrulha direto o TRAJETO_FIXO
-MODO_ENTRADA = "web"   # fase de testes; troque para "controle" na versao final
+# Se o controle (ou o evdev) nao for encontrado, o programa cai sozinho no
+# modo "web" em vez de travar.
+MODO_ENTRADA = "web"
 TRAJETO_FIXO = ["frente", "frente", "esquerda", "frente"]
 PORTA_WEB = 8000   # modo web: http://<IP_DO_ROBO>:8000 no celular
 
@@ -28,8 +30,10 @@ SOM_ATIVO_EM_ALTO = True   # alguns clones do KY-037 sao ativos em LOW: use Fals
 PIR_ATIVO_EM_ALTO = True
 
 # --- Controle USB 8-bit (evdev) ---------------------------------------------
-# Descubra o eventX e os codigos com "sudo evtest" (veja o fim do main.py).
-DEVICE_PATH = "/dev/input/event0"
+# None = procura sozinho o primeiro joystick/gamepad conectado.
+# Se tiver mais de um, fixe o caminho, ex.: "/dev/input/event2"
+# (descubra com "sudo evtest"; veja o fim do main.py).
+DEVICE_PATH = None
 
 # A maioria dos controles 8-bit genericos ("USB Gamepad", DragonRise) manda o
 # direcional como EIXO (EV_ABS) com valores 0 / 127 / 255.

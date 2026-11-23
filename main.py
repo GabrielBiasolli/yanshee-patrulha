@@ -28,11 +28,22 @@ import robo
 import sensores
 
 
+def _usar_web_no_lugar(motivo):
+    print("[!] {}".format(motivo))
+    print("[!] Usando o modo web (celular) no lugar do controle.")
+    import web
+    return web
+
+
 def escolher_entrada():
     """Devolve o modulo de entrada da Fase 1, ou None no modo "fixo".
     O import e feito aqui para os modos de teste nao exigirem o evdev."""
     if config.MODO_ENTRADA == "controle":
-        import controle
+        try:
+            import controle
+        except ImportError:
+            return _usar_web_no_lugar(
+                "evdev nao instalado (rode ./instalar.sh).")
         return controle
     if config.MODO_ENTRADA == "web":
         import web
@@ -43,6 +54,19 @@ def escolher_entrada():
     if config.MODO_ENTRADA == "fixo":
         return None
     raise ValueError("MODO_ENTRADA invalido: {}".format(config.MODO_ENTRADA))
+
+
+def abrir_entrada(entrada):
+    """Abre a entrada; se o controle nao estiver conectado, cai no modo web.
+    Devolve (modulo, dispositivo)."""
+    erro_controle = getattr(entrada, "ControleNaoEncontrado", None)
+    if erro_controle is None:
+        return entrada, entrada.abrir()
+    try:
+        return entrada, entrada.abrir()
+    except erro_controle as erro:
+        web = _usar_web_no_lugar(str(erro))
+        return web, web.abrir()
 
 
 def main():
@@ -62,7 +86,7 @@ def main():
             trajeto = list(config.TRAJETO_FIXO)
             print("[+] Modo fixo: pulando a gravacao. Trajeto: {}".format(trajeto))
         else:
-            dispositivo = entrada.abrir()
+            entrada, dispositivo = abrir_entrada(entrada)
             trajeto = patrulha.gravar_trajeto(entrada, dispositivo)
 
         sensor = patrulha.patrulhar(trajeto)
@@ -96,9 +120,11 @@ if __name__ == "__main__":
 # ============================================================================
 # COMANDOS UTEIS (rodar no terminal do Yanshee, via SSH)
 # ============================================================================
+# 0) Instalar as dependencias do controle (uma vez):
+#      ./instalar.sh
+#
 # 1) Descobrir o eventX do controle e os codigos dos botoes:
-#      sudo apt-get install -y evtest
-#      sudo evtest              # escolha o numero do "USB Gamepad" na lista,
+#      sudo evtest             # escolha o numero do "USB Gamepad" na lista,
 #                               # aperte direcional/START e anote type/code/value
 #      ls -l /dev/input/by-id/  # mostra qual eventX e o joystick
 #
