@@ -32,18 +32,25 @@ Patrulha autônoma para o robô humanoide **UBTECH Yanshee** (Raspberry Pi 3B, P
 
 ## Como rodar
 
+No terminal do robô (SSH):
+
 ```bash
+git clone https://github.com/GabrielBiasolli/yanshee-patrulha.git
+cd yanshee-patrulha
+./instalar.sh          # uma vez: instala evdev e evtest
 sudo python3 main.py
 ```
 
-Rode de dentro da pasta do projeto. Dependências no robô: `YanAPI` (já vem no Yanshee), `RPi.GPIO` e `evdev`.
+Rode sempre de dentro da pasta do projeto. O `YanAPI` e o `RPi.GPIO` já vêm no Yanshee.
+
+O programa procura sozinho o controle USB conectado. Se não encontrar o controle, ou se o `evdev` não estiver instalado, ele avisa e usa o **modo web**: o terminal mostra um endereço para abrir no celular.
 
 ### Modos de entrada
 
-O projeto vem em **modo web** (`MODO_ENTRADA = "web"` em `config.py`), para os testes. Para usar o controle 8-bit, troque para `"controle"`. Opções:
+Escolha em `MODO_ENTRADA`, no `config.py`:
 
-- `"controle"`: controle USB 8-bit via `evdev` (versão final).
-- `"web"` (padrão, para testes): o robô serve uma página em `http://<IP_DO_ROBO>:8000`. Pelo celular, na mesma rede Wi-Fi, você tem as setas, o START, botões para simular o som e o movimento, e um **PARAR PATRULHA**, que volta o robô ao `reset` sem dançar.
+- `"controle"` (padrão): controle USB 8-bit via `evdev`.
+- `"web"` (para testes): o robô serve uma página em `http://<IP_DO_ROBO>:8000`. Pelo celular, na mesma rede Wi-Fi, você tem as setas, o START, botões para simular o som e o movimento, e um **PARAR PATRULHA**, que volta o robô ao `reset` sem dançar.
 - `"teclado"`: grave o trajeto digitando `w` (frente), `a` (esquerda), `d` (direita) e `p` (START) no terminal via SSH.
 - `"fixo"`: pula a gravação e patrulha direto o `TRAJETO_FIXO`.
 
@@ -52,7 +59,7 @@ Nesses modos o `evdev` não é necessário.
 ## Calibração
 
 - `REPEAT_GIRO_180`: ajuste no chão até o giro dar ~180°.
-- `DEVICE_PATH`, `BOTAO_START` e eixos do direcional: confirme com `sudo evtest`.
+- `BOTAO_START` e eixos do direcional: confirme com `sudo evtest`. `DEVICE_PATH = None` detecta o controle sozinho; só fixe o caminho se houver mais de um joystick.
 - `NOME_DANCA_SHAKIRA`: confirme o nome exato com
   `python3 -c "import YanAPI; YanAPI.yan_api_init('127.0.0.1'); print(YanAPI.get_motion_list_value())"`.
   Se o nome não existir, o programa procura na lista algo com "waka" ou "shakira".

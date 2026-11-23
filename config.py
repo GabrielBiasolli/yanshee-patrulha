@@ -12,7 +12,7 @@ ROBO_IP = "127.0.0.1"
 #  "fixo"     -> pula a gravacao e patrulha direto o TRAJETO_FIXO
 # Se o controle (ou o evdev) nao for encontrado, o programa cai sozinho no
 # modo "web" em vez de travar.
-MODO_ENTRADA = "web"
+MODO_ENTRADA = "controle"
 TRAJETO_FIXO = ["frente", "frente", "esquerda", "frente"]
 PORTA_WEB = 8000   # modo web: http://<IP_DO_ROBO>:8000 no celular
 
